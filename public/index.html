@@ -2,11 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://data-api.polymarket.com https://polymarket.com;">
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-E9YWV7SSP1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-E9YWV7SSP1');
+    </script>
+    
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://data-api.polymarket.com https://polymarket.com https://www.google-analytics.com;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Track and copy large Polymarket prediction market trades in real-time. See what the whales are betting on.">
     <meta name="keywords" content="Polymarket, prediction markets, crypto trading, whale trades, copy trading">
-    <title>Polymarket Whale Trades - Copy Big Bets</title>
+    <title>Polymarket Track & Copy</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐋</text></svg>">
     <style>
         * {
@@ -39,7 +49,8 @@
         }
 
         .logo {
-            max-width: 300px;
+            max-width: 400px;
+            width: 100%;
             height: auto;
         }
 
@@ -548,13 +559,235 @@
         }
 
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
+            /* Reduce padding on mobile */
+            body {
+                padding: 10px;
             }
 
-            .controls, .copy-section {
+            /* Header optimizations */
+            header {
+                padding: 20px 10px 10px;
+            }
+
+            .logo {
+                max-width: 280px !important;
+                width: 90%;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .tagline {
+                font-size: 0.85em;
+            }
+
+            /* Info banner */
+            .info-banner {
+                padding: 15px;
+            }
+
+            .info-banner h3 {
+                font-size: 1.1em;
+            }
+
+            .info-banner p {
+                font-size: 0.9em;
+            }
+
+            /* Controls - stack vertically */
+            .controls {
                 flex-direction: column;
                 align-items: stretch;
+                padding: 15px;
+            }
+
+            .control-group {
+                width: 100%;
+            }
+
+            input, select, button {
+                width: 100%;
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+
+            /* Stats cards */
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-value {
+                font-size: 1.5em;
+            }
+
+            .stat-label {
+                font-size: 0.8em;
+            }
+
+            /* Trade cards */
+            .trade-card {
+                padding: 15px;
+            }
+
+            .trade-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .trade-title {
+                font-size: 1em;
+                min-width: 100%;
+            }
+
+            .trade-amount {
+                font-size: 1.3em;
+            }
+
+            /* Trader profile */
+            .trader-profile {
+                padding: 8px;
+                gap: 6px;
+            }
+
+            .trader-avatar {
+                width: 28px;
+                height: 28px;
+            }
+
+            .trader-link {
+                font-size: 0.85em;
+            }
+
+            .verified-badge,
+            .winrate-badge {
+                font-size: 0.65em;
+                padding: 2px 5px;
+            }
+
+            /* Trade details */
+            .trade-details {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .detail-label {
+                font-size: 0.75em;
+            }
+
+            .detail-value {
+                font-size: 0.95em;
+            }
+
+            /* Market link */
+            .market-link {
+                font-size: 0.85em;
+                display: block;
+                margin-top: 10px;
+            }
+
+            /* Copy section */
+            .copy-section {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+
+            .copy-input {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .copy-percentage {
+                justify-content: space-between;
+            }
+
+            .percentage-btn {
+                flex: 1;
+                padding: 10px 8px;
+                font-size: 0.9em;
+            }
+
+            .copy-btn {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 0.95em;
+            }
+
+            .whale-badge {
+                font-size: 0.75em;
+                padding: 4px 10px;
+            }
+
+            /* Modal */
+            .modal-content {
+                padding: 20px;
+                max-width: 95%;
+                margin: 10px;
+            }
+
+            .modal-header {
+                font-size: 1.2em;
+            }
+
+            .modal-body {
+                font-size: 0.9em;
+            }
+
+            /* Footer */
+            footer {
+                margin-top: 30px;
+                padding: 20px 15px;
+                border-radius: 10px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .powered-by {
+                font-size: 0.9em;
+            }
+
+            .social-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 12px 20px;
+            }
+
+            .social-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+        }
+
+        /* Extra small devices (phones in portrait, less than 576px) */
+        @media (max-width: 576px) {
+            .logo {
+                max-width: 220px !important;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .trade-details {
+                grid-template-columns: 1fr;
             }
 
             .trade-amount {
@@ -619,13 +852,13 @@
                 <!-- Replace the src below with your actual logo URL -->
                 <img src="logo.png" alt="Logo" class="logo" >
             </div>
-            <p class="subtitle">Track and Copy Large Prediction Market Bets</p>
-            <p class="tagline">See what the big players are betting on and copy their trades</p>
+            <p class="subtitle">Track and Copy Large Prediction Market Trades</p>
+            <p class="tagline">See what others are trading and copy their trades</p>
         </header>
 
         <div class="info-banner">
             <h3>💡 How It Works</h3>
-            <p>We track all trades over $4,000 on Polymarket in real-time. Click "Copy This Trade" to replicate any whale's position with your preferred amount!</p>
+            <p>We track all trades according to your min/max values on Polymarket in real-time. Click "Copy This Trade" will take you directly to the polymarket page!</p>
         </div>
 
         <div class="controls">
@@ -666,7 +899,7 @@
         <div class="stats" id="stats">
             <div class="stat-card">
                 <div class="stat-value" id="totalTrades">-</div>
-                <div class="stat-label">Whale Trades</div>
+                <div class="stat-label">Trades</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="totalVolume">-</div>
@@ -683,7 +916,7 @@
         </div>
 
         <div class="trades-container" id="tradesContainer">
-            <div class="loading">Loading whale trades...</div>
+            <div class="loading">Loading trades...</div>
         </div>
     </div>
 
@@ -703,11 +936,11 @@
 
     <div id="copyModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">🎯 Copy This Trade</div>
+            <div class="modal-header">🎯 Open This Market</div>
             <div class="modal-body" id="modalBody"></div>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeCopyModal()">Cancel</button>
-                <button class="copy-btn" onclick="executeCopyTrade()">Confirm & Copy Trade</button>
+                <button class="copy-btn" onclick="executeCopyTrade()">Confirm & Open</button>
             </div>
         </div>
     </div>
@@ -810,7 +1043,7 @@
             if (trades.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <h3>No whale trades found</h3>
+                        <h3>No trades found</h3>
                         <p>Try adjusting your filters to see more results.</p>
                     </div>
                 `;
@@ -942,6 +1175,14 @@
 
         function openCopyModal(trade) {
             currentCopyTrade = trade;
+            // Track copy trade button click
+            if (typeof gtag !== "undefined") {
+                gtag("event", "copy_trade_opened", {
+                    trade_amount: trade.size * trade.price,
+                    trade_side: trade.side,
+                    market_title: trade.title
+                });
+            }
             const copyAmount = document.getElementById(`copyAmount_${trade.timestamp}`).value;
             const cashValue = trade.size * trade.price;
             const shares = (parseFloat(copyAmount) / trade.price).toFixed(0);
@@ -984,6 +1225,14 @@
 
         function executeCopyTrade() {
             if (!currentCopyTrade) return;
+            // Track when user clicks to go to Polymarket
+            if (typeof gtag !== "undefined") {
+                gtag("event", "redirect_to_polymarket", {
+                    trade_amount: currentCopyTrade.copyAmount,
+                    trade_side: currentCopyTrade.side,
+                    market_title: currentCopyTrade.title
+                });
+            }
             
             // Build URL with via parameter
             let marketUrl = 'https://polymarket.com/brosonpm';
