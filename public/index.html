@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Track and copy large Polymarket prediction market trades in real-time. See what the whales are betting on.">
     <meta name="keywords" content="Polymarket, prediction markets, crypto trading, whale trades, copy trading">
-    <title>Polymarket Track & Copy</title>
+    <title>Polymarket Whale Trades - Copy Big Bets</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐋</text></svg>">
     <style>
         * {
@@ -39,7 +39,7 @@
         }
 
         .logo {
-            max-width: 400px;
+            max-width: 300px;
             height: auto;
         }
 
@@ -619,13 +619,13 @@
                 <!-- Replace the src below with your actual logo URL -->
                 <img src="logo.png" alt="Logo" class="logo" >
             </div>
-            <p class="subtitle">Track and Copy Large Prediction Market Trades</p>
-            <p class="tagline">See what others are trading and copy their trades</p>
+            <p class="subtitle">Track and Copy Large Prediction Market Bets</p>
+            <p class="tagline">See what the big players are betting on and copy their trades</p>
         </header>
 
         <div class="info-banner">
             <h3>💡 How It Works</h3>
-            <p>We track all trades according to your min/max values on Polymarket in real-time. Click "Copy This Trade" will take you directly to the polymarket page!</p>
+            <p>We track all trades over $4,000 on Polymarket in real-time. Click "Copy This Trade" to replicate any whale's position with your preferred amount!</p>
         </div>
 
         <div class="controls">
@@ -666,7 +666,7 @@
         <div class="stats" id="stats">
             <div class="stat-card">
                 <div class="stat-value" id="totalTrades">-</div>
-                <div class="stat-label">Trades</div>
+                <div class="stat-label">Whale Trades</div>
             </div>
             <div class="stat-card">
                 <div class="stat-value" id="totalVolume">-</div>
@@ -683,7 +683,7 @@
         </div>
 
         <div class="trades-container" id="tradesContainer">
-            <div class="loading">Loading trades...</div>
+            <div class="loading">Loading whale trades...</div>
         </div>
     </div>
 
@@ -703,11 +703,11 @@
 
     <div id="copyModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">🎯 Open This Market</div>
+            <div class="modal-header">🎯 Copy This Trade</div>
             <div class="modal-body" id="modalBody"></div>
             <div class="modal-footer">
                 <button class="btn-cancel" onclick="closeCopyModal()">Cancel</button>
-                <button class="copy-btn" onclick="executeCopyTrade()">Confirm & Open</button>
+                <button class="copy-btn" onclick="executeCopyTrade()">Confirm & Copy Trade</button>
             </div>
         </div>
     </div>
@@ -810,7 +810,7 @@
             if (trades.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <h3>No trades found</h3>
+                        <h3>No whale trades found</h3>
                         <p>Try adjusting your filters to see more results.</p>
                     </div>
                 `;
