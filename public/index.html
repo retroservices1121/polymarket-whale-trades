@@ -615,20 +615,24 @@
             }
 
             .control-group {
-                width: 100%;
             }
 
-            /* Share button - smaller on mobile */
+            /* Share button - MUCH SMALLER on mobile */
             .share-btn {
-                padding: 5px 10px !important;
-                font-size: 0.7em !important;
-                border-radius: 14px !important;
-                gap: 4px !important;
+                padding: 4px 8px !important;
+                font-size: 0.65em !important;
+                border-radius: 12px !important;
+                gap: 3px !important;
+                margin-top: 8px !important;
+                width: auto !important;
+                display: inline-flex !important;
             }
 
             .share-btn svg {
-                width: 12px !important;
-                height: 12px !important;
+                width: 10px !important;
+                height: 10px !important;
+            }
+                width: 100%;
             }
 
             input, select, button {
@@ -812,20 +816,21 @@
             }
 
             .trade-amount {
-                font-size: 1.2em;
             }
 
-            /* Share button - even smaller on very small screens */
+            /* Share button - EVEN SMALLER on very small screens */
             .share-btn {
-                padding: 5px 10px !important;
-                font-size: 0.7em !important;
-                border-radius: 14px !important;
-                gap: 4px !important;
+                padding: 4px 8px !important;
+                font-size: 0.65em !important;
+                border-radius: 12px !important;
+                gap: 3px !important;
             }
 
             .share-btn svg {
-                width: 12px !important;
-                height: 12px !important;
+                width: 10px !important;
+                height: 10px !important;
+            }
+                font-size: 1.2em;
             }
         }
 
@@ -861,6 +866,7 @@
             color: white;
             border: none;
             padding: 8px 16px;
+            margin-top: 10px;
             border-radius: 20px;
             font-weight: 600;
             font-size: 0.85em;
@@ -1218,14 +1224,7 @@
                             </div>
                         </div>
 
-                        ${trade.eventSlug ? `<a href="https://polymarket.com/event/${trade.eventSlug}?via=brosonpm" target="_blank" class="market-link">📊 View Market on Polymarket →</a>` : marketSlug ? `<a href="https://polymarket.com/event/${marketSlug}?via=brosonpm" target="_blank" class="market-link">📊 View Market on Polymarket →</a>` : ''}
-
-                        <button class="share-btn" onclick='shareOnX(${JSON.stringify(trade).replace(/'/g, "&#39;")})' title="Share on X (Twitter)">
-                            Share on
-                            <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                            </svg>
-                        </button>
+                        ${trade.eventSlug ? `<a href="https://polymarket.com/event/${trade.eventSlug}?via=brosonpm" target="_blank" class="market-link">📊 View Market on Polymarket →</a>` : marketSlug ? `<a href="https://polymarket.com/event/${marketSlug}?via=brosonpm" target="_blank" class="market-link">📊 View Market on Polymarket →</a>` : ''}\n\n                        <button class="share-btn" onclick='shareOnX(${JSON.stringify(trade).replace(/'/g, "#39;")})' title="Share on (Twitter)">\n                            Share on\n                            <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">\n                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>\n                            </svg>\n                        </button>
 
                         <div class="copy-section">
                             <div style="flex: 1;">
@@ -1279,7 +1278,7 @@
                 : `https://polymarket.com/event/${trade.slug}?via=brosonpm`;
             
             // Create the tweet text with proper spacing
-            const tweetText = `🐋 CHECK OUT THIS TRADE!
+const tweetText = `🐋 CHECK OUT THIS TRADE!
 
 ${trade.side === 'BUY' ? '📈' : '📉'} $${formattedAmount} ${trade.side} on "${trade.title}"
 
