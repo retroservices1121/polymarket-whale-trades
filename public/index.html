@@ -16,6 +16,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Track and copy large Polymarket prediction market trades in real-time. See what the whales are betting on.">
     <meta name="keywords" content="Polymarket, prediction markets, crypto trading, whale trades, copy trading">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@brosonpm">
+    <meta name="twitter:creator" content="@brosonpm">
+    <meta name="twitter:title" content="Polymarket Whale Trades - Track & Copy Big Bets">
+    <meta name="twitter:description" content="Track and copy large Polymarket prediction market trades in real-time. See what the whales are betting on.">
+    <meta name="twitter:image" content="https://polymarket-whale-trades-production.up.railway.app/logo.png">
     <title>Polymarket Track & Copy</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐋</text></svg>">
     <style>
@@ -796,6 +804,59 @@
         }
 
         /* Footer Styles */
+        /* Search Bar Styles */
+        #searchInput {
+            padding: 10px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: #2e5cff;
+            box-shadow: 0 0 0 3px rgba(46, 92, 255, 0.1);
+        }
+
+        #searchInput::placeholder {
+            color: #999;
+        }
+
+        .search-highlight {
+            background-color: #fff3cd;
+            font-weight: 600;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        /* Share Button Styles */
+        .share-btn {
+            background: #000000;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85em;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+        }
+
+        .share-btn:hover {
+            background: #1d9bf0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(29, 155, 240, 0.4);
+        }
+
+        .share-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+
         footer {
             margin-top: 40px;
             padding: 30px 20px;
@@ -858,18 +919,28 @@
 
         <div class="info-banner">
             <h3>💡 How It Works</h3>
-            <p>We track all trades according to your min/max values on Polymarket in real-time. Click "Copy This Trade" will take you directly to the polymarket page!</p>
+            <p>Track Polymarket whale trades in real-time. Use filters and search to find specific markets. Click "Copy This Trade" to replicate any position!</p>
         </div>
 
         <div class="controls">
+            <div class="control-group" style="flex: 2; min-width: 250px;">
+                <label for="searchInput">🔍 Search Markets</label>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Search for Elon, Trump, shutdown, etc..." 
+                    oninput="filterTrades()"
+                    style="width: 100%;">
+            </div>
+
             <div class="control-group">
                 <label for="minAmount">Min Trade Size ($)</label>
-                <input type="number" id="minAmount" value="4000" min="0" step="100">
+                <input type="number" id="minAmount" value="0" placeholder="Min amount (optional)" min="0" step="100">
             </div>
 
             <div class="control-group">
                 <label for="maxAmount">Max Trade Size ($)</label>
-                <input type="number" id="maxAmount" value="100000" min="0" step="1000">
+                <input type="number" id="maxAmount" value="" placeholder="Max amount (optional)" min="0" step="1000">
             </div>
 
             <div class="control-group">
@@ -949,6 +1020,7 @@
         let autoRefreshInterval = null;
         let currentCopyTrade = null;
         let traderStatsCache = {}; // Cache trader stats to avoid repeated API calls
+        let allTrades = []; // Store all fetched trades for filtering
 
         // Calculate trader stats (verified status, win rate)
         function getTraderStats(cashValue) {
@@ -1002,7 +1074,7 @@
             const fetchBtn = document.getElementById('fetchBtn');
             
             const minAmount = parseFloat(document.getElementById('minAmount').value) || 0;
-            const maxAmount = parseFloat(document.getElementById('maxAmount').value) || 10000000;
+            const maxAmount = parseFloat(document.getElementById("maxAmount").value) || Infinity;
             const limit = document.getElementById('limit').value;
 
             fetchBtn.disabled = true;
@@ -1023,6 +1095,8 @@
                     return cashValue >= minAmount && cashValue <= maxAmount;
                 });
 
+                // Store trades globally for search filtering
+                allTrades = filteredTrades;
                 displayTrades(filteredTrades);
                 updateStats(filteredTrades);
 
@@ -1118,7 +1192,7 @@
                             </div>
                         </div>
 
-                        ${trade.eventSlug ? `<a href="https://polymarket.com/event/${trade.eventSlug}?via=brosonpm" target="_blank" class="market-link">📊 View Market on Polymarket →</a>` : marketSlug ? `<a href="https://polymarket.com/event/${marketSlug}?via=brosonpm" target="_blank" class="market-link">📊 View Market on Polymarket →</a>` : ''}
+                        ${trade.eventSlug ? `<a href="https://polymarket.com/event/${trade.eventSlug}?via=brosonpm" target="_blank" class="market-link">📊 View Market on Polymarket →</a>` : marketSlug ? `<a href="https://polymarket.com/event/${marketSlug}?via=brosonpm" target="_blank" class="market-link">📊 View Market on Polymarket →</a>` : ''}\n\n                        <button class="share-btn" onclick='shareOnX(${JSON.stringify(trade).replace(/'/g, "#39;")})' title="Share on (Twitter)">\n                            Share on\n                            <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">\n                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>\n                            </svg>\n                        </button>
 
                         <div class="copy-section">
                             <div style="flex: 1;">
@@ -1160,6 +1234,86 @@
             document.getElementById('largestTrade').textContent = '$' + largestTrade.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
         }
 
+
+
+        function shareOnX(trade) {
+            const cashValue = trade.size * trade.price;
+            const formattedAmount = cashValue.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+            
+            // Use the market URL instead of your site - this will show Polymarket's rich card
+            const marketUrl = trade.eventSlug 
+                ? `https://polymarket.com/event/${trade.eventSlug}?via=brosonpm`
+                : `https://polymarket.com/event/${trade.slug}?via=brosonpm`;
+            
+            // Create the tweet text with proper spacing
+const tweetText = `🐋 CHECK OUT THIS TRADE!
+
+${trade.side === 'BUY' ? '📈' : '📉'} $${formattedAmount} ${trade.side} on "${trade.title}"
+
+Outcome: ${trade.outcome || 'N/A'}
+
+#Polymarket #WhaleTrades #PredictionMarkets #PolymarketTraders
+
+Copy this trade 👇`;
+            
+            // Use market URL in tweet - Twitter will show Polymarket's card preview
+            const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(marketUrl)}&via=brosonpm`;
+            
+            // Track in Google Analytics
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'share_on_x', {
+                    trade_amount: cashValue,
+                    market_title: trade.title
+                });
+            }
+            
+            // Open Twitter in new window
+            window.open(tweetUrl, '_blank', 'width=550,height=420');
+        }
+        function filterTrades() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            // Track search in Google Analytics
+            if (typeof gtag !== 'undefined' && searchTerm) {
+                gtag('event', 'search_trades', {
+                    search_term: searchTerm
+                });
+            }
+            
+            if (!searchTerm) {
+                // If search is empty, show all trades
+                displayTrades(allTrades);
+                return;
+            }
+            
+            // Filter trades by title, outcome, or trader name
+            const filtered = allTrades.filter(trade => {
+                const title = (trade.title || '').toLowerCase();
+                const outcome = (trade.outcome || '').toLowerCase();
+                const traderName = (trade.name || trade.pseudonym || '').toLowerCase();
+                
+                return title.includes(searchTerm) || 
+                       outcome.includes(searchTerm) || 
+                       traderName.includes(searchTerm);
+            });
+            
+            displayTrades(filtered);
+            
+            // Show count
+            const container = document.getElementById('tradesContainer');
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>🔍 No results found for "${searchTerm}"</h3>
+                        <p>Try searching for "Trump", "Elon", "shutdown", or other keywords</p>
+                        <button onclick="document.getElementById('searchInput').value=''; filterTrades();" 
+                                style="margin-top: 15px; padding: 10px 20px;">
+                            Clear Search
+                        </button>
+                    </div>
+                `;
+            }
+        }
         function setPercentage(timestamp, percentage) {
             const input = document.getElementById(`copyAmount_${timestamp}`);
             const tradeCards = document.querySelectorAll('.trade-card');
