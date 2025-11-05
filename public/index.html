@@ -12,7 +12,7 @@
         gtag('config', 'G-E9YWV7SSP1');
     </script>
     
-	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://data-api.polymarket.com https://polymarket.com https://www.google-analytics.com;">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://data-api.polymarket.com https://gamma-api.polymarket.com https://polymarket.com https://www.google-analytics.com;">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Track and copy large Polymarket prediction market trades in real-time. See what the whales are betting on.">
     <meta name="keywords" content="Polymarket, prediction markets, crypto trading, whale trades, copy trading">
@@ -185,11 +185,6 @@
             color: #475569;
         }
 
-        .info-banner h3 {
-            margin-bottom: 10px;
-            font-size: 1.3em;
-        }
-
         .trades-container {
             background: white;
             border-radius: 15px;
@@ -276,6 +271,16 @@
             font-size: 1.05em;
         }
 
+        .expires-soon {
+            color: #ef4444 !important;
+            font-weight: 700 !important;
+        }
+
+        .expires-warning {
+            color: #f59e0b !important;
+            font-weight: 700 !important;
+        }
+
         .badge {
             display: inline-block;
             padding: 5px 14px;
@@ -326,12 +331,6 @@
             text-decoration: underline;
         }
 
-        .trader-wallet {
-            font-family: monospace;
-            font-size: 0.8em;
-            color: #666;
-        }
-
         .trader-badges {
             display: flex;
             gap: 4px;
@@ -361,36 +360,6 @@
 
         .winrate-badge.high {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        }
-
-        .recent-trades-section {
-            margin-top: 15px;
-            padding: 15px;
-            background: #f8fafc;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-        }
-
-        .recent-trades-title {
-            font-size: 0.95em;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .recent-trade-item {
-            padding: 8px;
-            background: white;
-            border-radius: 6px;
-            margin-bottom: 6px;
-            font-size: 0.85em;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .recent-trade-item:last-child {
-            margin-bottom: 0;
         }
 
         .copy-section {
@@ -446,12 +415,6 @@
         }
 
         .percentage-btn:hover {
-            background: #2e5cff;
-            color: white;
-            border-color: #2e5cff;
-        }
-
-        .percentage-btn.active {
             background: #2e5cff;
             color: white;
             border-color: #2e5cff;
@@ -560,19 +523,39 @@
             color: #333;
         }
 
-        .time-ago {
+        /* Share Button Styles */
+        .share-btn {
+            background: #000000;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
             font-size: 0.85em;
-            color: #888;
-            margin-top: 5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .share-btn:hover {
+            background: #1d9bf0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(29, 155, 240, 0.4);
+        }
+
+        .share-btn svg {
+            width: 16px;
+            height: 16px;
         }
 
         @media (max-width: 768px) {
-            /* Reduce padding on mobile */
             body {
                 padding: 10px;
             }
 
-            /* Header optimizations */
             header {
                 padding: 20px 10px 10px;
             }
@@ -590,24 +573,10 @@
                 font-size: 1em;
             }
 
-            .tagline {
-                font-size: 0.85em;
-            }
-
-            /* Info banner */
             .info-banner {
                 padding: 15px;
             }
 
-            .info-banner h3 {
-                font-size: 1.1em;
-            }
-
-            .info-banner p {
-                font-size: 0.9em;
-            }
-
-            /* Controls - stack vertically */
             .controls {
                 flex-direction: column;
                 align-items: stretch;
@@ -615,6 +584,7 @@
             }
 
             .control-group {
+                width: 100%;
             }
 
             /* Share button - MUCH SMALLER on mobile */
@@ -632,15 +602,28 @@
                 width: 10px !important;
                 height: 10px !important;
             }
-                width: 100%;
-            }
 
-            input, select, button {
+            input, select {
                 width: 100%;
                 font-size: 16px; /* Prevents zoom on iOS */
             }
 
-            /* Stats cards */
+            /* Only control panel buttons should be full width */
+            .controls button {
+                width: 100%;
+            }
+
+            /* Keep percentage buttons their natural size */
+            .percentage-btn {
+                width: auto !important;
+                flex: 1;
+            }
+
+            /* Copy button should be full width */
+            .copy-btn {
+                width: 100% !important;
+            }
+
             .stats {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 10px;
@@ -658,7 +641,6 @@
                 font-size: 0.8em;
             }
 
-            /* Trade cards */
             .trade-card {
                 padding: 15px;
             }
@@ -666,19 +648,16 @@
             .trade-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 10px;
             }
 
             .trade-title {
                 font-size: 1em;
-                min-width: 100%;
             }
 
             .trade-amount {
                 font-size: 1.3em;
             }
 
-            /* Trader profile */
             .trader-profile {
                 padding: 8px;
                 gap: 6px;
@@ -699,7 +678,6 @@
                 padding: 2px 5px;
             }
 
-            /* Trade details */
             .trade-details {
                 grid-template-columns: 1fr 1fr;
                 gap: 10px;
@@ -713,14 +691,12 @@
                 font-size: 0.95em;
             }
 
-            /* Market link */
             .market-link {
                 font-size: 0.85em;
                 display: block;
                 margin-top: 10px;
             }
 
-            /* Copy section */
             .copy-section {
                 flex-direction: column;
                 align-items: stretch;
@@ -736,24 +712,11 @@
                 justify-content: space-between;
             }
 
-            .percentage-btn {
-                flex: 1;
-                padding: 10px 8px;
-                font-size: 0.9em;
-            }
-
-            .copy-btn {
-                width: 100%;
-                padding: 12px 20px;
-                font-size: 0.95em;
-            }
-
             .whale-badge {
                 font-size: 0.75em;
                 padding: 4px 10px;
             }
 
-            /* Modal */
             .modal-content {
                 padding: 20px;
                 max-width: 95%;
@@ -768,7 +731,6 @@
                 font-size: 0.9em;
             }
 
-            /* Footer */
             footer {
                 margin-top: 30px;
                 padding: 20px 15px;
@@ -797,7 +759,6 @@
             }
         }
 
-        /* Extra small devices (phones in portrait, less than 576px) */
         @media (max-width: 576px) {
             .logo {
                 max-width: 220px !important;
@@ -816,26 +777,10 @@
             }
 
             .trade-amount {
-            }
-
-            /* Share button - EVEN SMALLER on very small screens */
-            .share-btn {
-                padding: 4px 8px !important;
-                font-size: 0.65em !important;
-                border-radius: 12px !important;
-                gap: 3px !important;
-            }
-
-            .share-btn svg {
-                width: 10px !important;
-                height: 10px !important;
-            }
                 font-size: 1.2em;
             }
         }
 
-        /* Footer Styles */
-        /* Search Bar Styles */
         #searchInput {
             padding: 10px 15px;
             border: 2px solid #e0e0e0;
@@ -849,45 +794,6 @@
             border-color: #2e5cff;
             box-shadow: 0 0 0 3px rgba(46, 92, 255, 0.1);
         }
-
-        #searchInput::placeholder {
-            color: #999;
-        }
-
-        .search-highlight {
-            background-color: #fff3cd;
-            font-weight: 600;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-        /* Share Button Styles */
-        .share-btn {
-            background: #000000;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            margin-top: 10px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.85em;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.3s;
-        }
-
-        .share-btn:hover {
-            background: #1d9bf0;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(29, 155, 240, 0.4);
-        }
-
-        .share-btn svg {
-            width: 16px;
-            height: 16px;
-        }
-
 
         footer {
             margin-top: 40px;
@@ -942,8 +848,7 @@
     <div class="container">
         <header>
             <div class="logo-container">
-                <!-- Replace the src below with your actual logo URL -->
-                <img src="logo.png" alt="Logo" class="logo" >
+                <img src="logo.png" alt="Logo" class="logo">
             </div>
             <p class="subtitle">Track and Copy Large Prediction Market Trades</p>
             <p class="tagline">See what others are trading and copy their trades</p>
@@ -1051,54 +956,91 @@
     <script>
         let autoRefreshInterval = null;
         let currentCopyTrade = null;
-        let traderStatsCache = {}; // Cache trader stats to avoid repeated API calls
-        let allTrades = []; // Store all fetched trades for filtering
+        let traderStatsCache = {};
+        let allTrades = [];
+        let marketDetailsCache = {};
 
-        // Calculate trader stats (verified status, win rate)
-        function getTraderStats(cashValue) {
-            // Verified: trades over $10k consistently
-            const isVerified = cashValue >= 10000;
+        // Fetch market details with timeout
+        async function getMarketDetails(conditionId, timeout = 2000) {
+            if (!conditionId) return null;
             
-            // Mock win rate based on trade size (in production, fetch from API)
-            // Larger trades = likely more experienced = higher win rate
-            let winRate;
-            if (cashValue >= 20000) {
-                winRate = Math.floor(Math.random() * 15) + 70; // 70-85%
-            } else if (cashValue >= 10000) {
-                winRate = Math.floor(Math.random() * 20) + 60; // 60-80%
-            } else if (cashValue >= 5000) {
-                winRate = Math.floor(Math.random() * 20) + 50; // 50-70%
-            } else {
-                winRate = null; // Don't show for smaller trades
-            }
-            
-            return { isVerified, winRate };
-        }
-
-        // Fetch recent trades for a wallet
-        async function fetchRecentTrades(traderAddress) {
-            if (!traderAddress || traderAddress === 'Unknown') return [];
-            
-            // Check cache first
-            if (traderStatsCache[traderAddress]) {
-                return traderStatsCache[traderAddress];
+            if (marketDetailsCache[conditionId]) {
+                return marketDetailsCache[conditionId];
             }
             
             try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), timeout);
+                
                 const response = await fetch(
-                    `https://data-api.polymarket.com/trades?user=${traderAddress}&limit=5`
+                    `https://gamma-api.polymarket.com/markets?condition_id=${conditionId}`,
+                    { signal: controller.signal }
                 );
                 
+                clearTimeout(timeoutId);
+                
                 if (response.ok) {
-                    const trades = await response.json();
-                    traderStatsCache[traderAddress] = trades;
-                    return trades;
+                    const markets = await response.json();
+                    if (markets && markets.length > 0) {
+                        marketDetailsCache[conditionId] = markets[0];
+                        return markets[0];
+                    }
                 }
             } catch (e) {
-                console.log('Error fetching recent trades:', e);
+                if (e.name !== 'AbortError') {
+                    console.log('Error fetching market details:', e.message);
+                }
             }
             
-            return [];
+            return null;
+        }
+
+        // Format expiration date
+        function formatExpirationDate(endDateISO) {
+            if (!endDateISO) return { text: null, isUrgent: false, isWarning: false };
+            
+            const endDate = new Date(endDateISO);
+            const now = new Date();
+            
+            if (endDate < now) {
+                return { text: 'Expired', isUrgent: true, isWarning: false };
+            }
+            
+            const daysUntil = Math.ceil((endDate - now) / (1000 * 60 * 60 * 24));
+            
+            if (daysUntil === 0) {
+                return { text: '⚠️ Expires today', isUrgent: true, isWarning: false };
+            } else if (daysUntil === 1) {
+                return { text: '⚠️ Expires tomorrow', isUrgent: true, isWarning: false };
+            } else if (daysUntil <= 3) {
+                return { text: `Expires in ${daysUntil} days`, isUrgent: true, isWarning: false };
+            } else if (daysUntil <= 7) {
+                return { text: `Expires in ${daysUntil} days`, isUrgent: false, isWarning: true };
+            } else {
+                const dateText = endDate.toLocaleDateString('en-US', { 
+                    month: 'short', 
+                    day: 'numeric', 
+                    year: 'numeric' 
+                });
+                return { text: dateText, isUrgent: false, isWarning: false };
+            }
+        }
+
+        function getTraderStats(cashValue) {
+            const isVerified = cashValue >= 10000;
+            
+            let winRate;
+            if (cashValue >= 20000) {
+                winRate = Math.floor(Math.random() * 15) + 70;
+            } else if (cashValue >= 10000) {
+                winRate = Math.floor(Math.random() * 20) + 60;
+            } else if (cashValue >= 5000) {
+                winRate = Math.floor(Math.random() * 20) + 50;
+            } else {
+                winRate = null;
+            }
+            
+            return { isVerified, winRate };
         }
 
         async function fetchTrades() {
@@ -1127,10 +1069,13 @@
                     return cashValue >= minAmount && cashValue <= maxAmount;
                 });
 
-                // Store trades globally for search filtering
                 allTrades = filteredTrades;
+                
                 displayTrades(filteredTrades);
                 updateStats(filteredTrades);
+                
+                // Fetch expiration dates in background
+                fetchExpirationDatesInBackground(filteredTrades);
 
             } catch (error) {
                 container.innerHTML = `
@@ -1140,6 +1085,54 @@
                 `;
             } finally {
                 fetchBtn.disabled = false;
+            }
+        }
+
+        // Fetch expiration dates in background
+        async function fetchExpirationDatesInBackground(trades) {
+            console.log('Fetching expiration dates for', trades.length, 'trades');
+            for (const trade of trades) {
+                // Try multiple possible fields for condition_id
+                const conditionId = trade.condition_id || trade.conditionId || trade.market;
+                if (conditionId) {
+                    console.log('Fetching market details for condition:', conditionId);
+                    const marketDetails = await getMarketDetails(conditionId);
+                    if (marketDetails) {
+                        console.log('Got market details, updating trade', trade.timestamp);
+                        updateTradeExpiration(trade, marketDetails);
+                    } else {
+                        console.log('No market details returned for', conditionId);
+                        // Update with N/A
+                        const expirationEl = document.getElementById(`expiration_${trade.timestamp}`);
+                        if (expirationEl) {
+                            expirationEl.textContent = 'N/A';
+                        }
+                    }
+                } else {
+                    console.log('No condition_id found for trade:', trade.timestamp);
+                    // Update with N/A
+                    const expirationEl = document.getElementById(`expiration_${trade.timestamp}`);
+                    if (expirationEl) {
+                        expirationEl.textContent = 'N/A';
+                    }
+                }
+            }
+        }
+
+        // Update a single trade card with expiration info
+        function updateTradeExpiration(trade, marketDetails) {
+            const expirationInfo = marketDetails?.end_date_iso 
+                ? formatExpirationDate(marketDetails.end_date_iso)
+                : { text: 'N/A', isUrgent: false, isWarning: false };
+            
+            const expirationEl = document.getElementById(`expiration_${trade.timestamp}`);
+            console.log('Looking for element:', `expiration_${trade.timestamp}`, 'Found:', !!expirationEl);
+            if (expirationEl) {
+                expirationEl.textContent = expirationInfo.text;
+                expirationEl.className = `detail-value ${expirationInfo.isUrgent ? 'expires-soon' : expirationInfo.isWarning ? 'expires-warning' : ''}`;
+                console.log('Updated expiration to:', expirationInfo.text);
+            } else {
+                console.error('Element not found:', `expiration_${trade.timestamp}`);
             }
         }
 
@@ -1163,19 +1156,14 @@
                 const marketSlug = trade.slug || '';
                 const isWhale = cashValue >= 10000;
                 
-                // Get trader stats
                 const { isVerified, winRate } = getTraderStats(cashValue);
                 
-                // Trader info
                 const traderAddress = trade.proxyWallet || 'Unknown';
                 const traderName = trade.name || trade.pseudonym || null;
                 const shortAddress = traderAddress !== 'Unknown' ? traderAddress.slice(0, 6) + '...' + traderAddress.slice(-4) : 'Unknown';
                 const profileUrl = traderAddress !== 'Unknown' ? `https://polymarket.com/profile/${traderAddress}?via=brosonpm` : '#';
                 
-                // Use profile image if available, otherwise use generated avatar
                 const avatarUrl = trade.profileImageOptimized || trade.profileImage || `https://api.dicebear.com/7.x/identicon/svg?seed=${traderAddress}`;
-                
-                // Display name (use name/pseudonym if available, otherwise show wallet address)
                 const displayName = traderName || shortAddress;
                 
                 return `
@@ -1187,7 +1175,6 @@
                             </div>
                         </div>
 
-                        <!-- Trader Profile Section -->
                         <div class="trader-profile">
                             <a href="${profileUrl}" target="_blank" title="View trader profile">
                                 <img src="${avatarUrl}" alt="Trader" class="trader-avatar">
@@ -1222,9 +1209,20 @@
                                 <span class="detail-label">Time</span>
                                 <span class="detail-value">${timeAgo}</span>
                             </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Expires</span>
+                                <span class="detail-value" id="expiration_${trade.timestamp}">Loading...</span>
+                            </div>
                         </div>
 
-                        ${trade.eventSlug ? `<a href="https://polymarket.com/event/${trade.eventSlug}?via=brosonpm" target="_blank" class="market-link">📊 View Market on Polymarket →</a>` : marketSlug ? `<a href="https://polymarket.com/event/${marketSlug}?via=brosonpm" target="_blank" class="market-link">📊 View Market on Polymarket →</a>` : ''}\n\n                        <button class="share-btn" onclick='shareOnX(${JSON.stringify(trade).replace(/'/g, "#39;")})' title="Share on (Twitter)">\n                            Share on\n                            <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">\n                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>\n                            </svg>\n                        </button>
+                        ${trade.eventSlug ? `<a href="https://polymarket.com/event/${trade.eventSlug}?via=brosonpm" target="_blank" class="market-link">📊 View Market on Polymarket →</a>` : marketSlug ? `<a href="https://polymarket.com/event/${marketSlug}?via=brosonpm" target="_blank" class="market-link">📊 View Market on Polymarket →</a>` : ''}
+
+                        <button class="share-btn" onclick='shareOnX(${JSON.stringify(trade).replace(/'/g, "&#39;")})' title="Share on X (Twitter)">
+                            Share on
+                            <svg fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </button>
 
                         <div class="copy-section">
                             <div style="flex: 1;">
@@ -1266,32 +1264,26 @@
             document.getElementById('largestTrade').textContent = '$' + largestTrade.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
         }
 
-
-
         function shareOnX(trade) {
             const cashValue = trade.size * trade.price;
             const formattedAmount = cashValue.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
             
-            // Use the market URL instead of your site - this will show Polymarket's rich card
             const marketUrl = trade.eventSlug 
                 ? `https://polymarket.com/event/${trade.eventSlug}?via=brosonpm`
                 : `https://polymarket.com/event/${trade.slug}?via=brosonpm`;
             
-            // Create the tweet text with proper spacing
-const tweetText = `🐋 CHECK OUT THIS TRADE!
+            const tweetText = `🐋 CHECK OUT THIS TRADE!
 
 ${trade.side === 'BUY' ? '📈' : '📉'} $${formattedAmount} ${trade.side} on "${trade.title}"
 
 Outcome: ${trade.outcome || 'N/A'}
 
-#Polymarket #PolymarketTraders
+#Polymarket #WhaleTrades #PredictionMarkets #PolymarketTraders
 
 Copy this trade 👇`;
             
-            // Use market URL in tweet - Twitter will show Polymarket's card preview
             const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(marketUrl)}&via=brosonpm`;
             
-            // Track in Google Analytics
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'share_on_x', {
                     trade_amount: cashValue,
@@ -1299,13 +1291,12 @@ Copy this trade 👇`;
                 });
             }
             
-            // Open Twitter in new window
             window.open(tweetUrl, '_blank', 'width=550,height=420');
         }
+
         function filterTrades() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
             
-            // Track search in Google Analytics
             if (typeof gtag !== 'undefined' && searchTerm) {
                 gtag('event', 'search_trades', {
                     search_term: searchTerm
@@ -1313,12 +1304,10 @@ Copy this trade 👇`;
             }
             
             if (!searchTerm) {
-                // If search is empty, show all trades
                 displayTrades(allTrades);
                 return;
             }
             
-            // Filter trades by title, outcome, or trader name
             const filtered = allTrades.filter(trade => {
                 const title = (trade.title || '').toLowerCase();
                 const outcome = (trade.outcome || '').toLowerCase();
@@ -1331,7 +1320,6 @@ Copy this trade 👇`;
             
             displayTrades(filtered);
             
-            // Show count
             const container = document.getElementById('tradesContainer');
             if (filtered.length === 0) {
                 container.innerHTML = `
@@ -1346,6 +1334,7 @@ Copy this trade 👇`;
                 `;
             }
         }
+
         function setPercentage(timestamp, percentage) {
             const input = document.getElementById(`copyAmount_${timestamp}`);
             const tradeCards = document.querySelectorAll('.trade-card');
@@ -1361,7 +1350,7 @@ Copy this trade 👇`;
 
         function openCopyModal(trade) {
             currentCopyTrade = trade;
-            // Track copy trade button click
+            
             if (typeof gtag !== "undefined") {
                 gtag("event", "copy_trade_opened", {
                     trade_amount: trade.size * trade.price,
@@ -1369,6 +1358,7 @@ Copy this trade 👇`;
                     market_title: trade.title
                 });
             }
+            
             const copyAmount = document.getElementById(`copyAmount_${trade.timestamp}`).value;
             const cashValue = trade.size * trade.price;
             const shares = (parseFloat(copyAmount) / trade.price).toFixed(0);
@@ -1379,9 +1369,9 @@ Copy this trade 👇`;
                     <h4 style="margin-bottom: 10px; color: #333;">Trade Details:</h4>
                     <p><strong>Market:</strong> ${trade.title}</p>
                     <p><strong>Position:</strong> ${trade.side} ${trade.outcome || ''}</p>
-                    <p><strong>Original Trade:</strong> ${cashValue.toLocaleString()}</p>
-                    <p style="color: #2e5cff; font-size: 1.1em; margin-top: 10px;"><strong>Your Amount: ${parseFloat(copyAmount).toLocaleString()}</strong></p>
-                    <p><strong>Price per Share:</strong> ${trade.price.toFixed(4)}</p>
+                    <p><strong>Original Trade:</strong> $${cashValue.toLocaleString()}</p>
+                    <p style="color: #2e5cff; font-size: 1.1em; margin-top: 10px;"><strong>Your Amount: $${parseFloat(copyAmount).toLocaleString()}</strong></p>
+                    <p><strong>Price per Share:</strong> $${trade.price.toFixed(4)}</p>
                     <p><strong>Shares You'll Get:</strong> ~${shares.toLocaleString()}</p>
                 </div>
                 
@@ -1390,7 +1380,7 @@ Copy this trade 👇`;
                     <ol style="margin: 10px 0 0 20px; color: #0c4a6e;">
                         <li>Click "Open Trade on Polymarket" below</li>
                         <li>Select "<strong>${trade.side} ${trade.outcome || ''}</strong>"</li>
-                        <li>Enter amount: <strong style="background: #fff; padding: 2px 8px; border-radius: 4px; cursor: pointer;" onclick="navigator.clipboard.writeText('${copyAmount}'); alert('Copied ${copyAmount}!')">${parseFloat(copyAmount).toLocaleString()}</strong> (click to copy)</li>
+                        <li>Enter amount: <strong style="background: #fff; padding: 2px 8px; border-radius: 4px; cursor: pointer;" onclick="navigator.clipboard.writeText('${copyAmount}'); alert('Copied $${copyAmount}!')">${parseFloat(copyAmount).toLocaleString()}</strong> (click to copy)</li>
                         <li>Confirm the trade on Polymarket</li>
                     </ol>
                 </div>
@@ -1411,7 +1401,7 @@ Copy this trade 👇`;
 
         function executeCopyTrade() {
             if (!currentCopyTrade) return;
-            // Track when user clicks to go to Polymarket
+            
             if (typeof gtag !== "undefined") {
                 gtag("event", "redirect_to_polymarket", {
                     trade_amount: currentCopyTrade.copyAmount,
@@ -1420,7 +1410,6 @@ Copy this trade 👇`;
                 });
             }
             
-            // Build URL with via parameter
             let marketUrl = 'https://polymarket.com/brosonpm';
             
             if (currentCopyTrade.eventSlug) {
@@ -1429,14 +1418,10 @@ Copy this trade 👇`;
                 marketUrl = `https://polymarket.com/event/${currentCopyTrade.slug}?via=brosonpm`;
             }
             
-            // Log for debugging
-            console.log('Opening URL:', marketUrl);
-            
-            // Open Polymarket in new tab
             window.open(marketUrl, '_blank');
             
             closeCopyModal();
-            alert(`✅ Opening Polymarket to complete your ${parseFloat(currentCopyTrade.copyAmount).toLocaleString()} ${currentCopyTrade.side} trade!\n\nYou'll need to connect your wallet and confirm the transaction.`);
+            alert(`✅ Opening Polymarket to complete your $${parseFloat(currentCopyTrade.copyAmount).toLocaleString()} ${currentCopyTrade.side} trade!\n\nYou'll need to connect your wallet and confirm the transaction.`);
         }
 
         function getTimeAgo(date) {
