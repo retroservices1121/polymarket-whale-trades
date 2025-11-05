@@ -615,6 +615,23 @@
             }
 
             .control-group {
+            }
+
+            /* Share button - MUCH SMALLER on mobile */
+            .share-btn {
+                padding: 4px 8px !important;
+                font-size: 0.65em !important;
+                border-radius: 12px !important;
+                gap: 3px !important;
+                margin-top: 8px !important;
+                width: auto !important;
+                display: inline-flex !important;
+            }
+
+            .share-btn svg {
+                width: 10px !important;
+                height: 10px !important;
+            }
                 width: 100%;
             }
 
@@ -799,6 +816,20 @@
             }
 
             .trade-amount {
+            }
+
+            /* Share button - EVEN SMALLER on very small screens */
+            .share-btn {
+                padding: 4px 8px !important;
+                font-size: 0.65em !important;
+                border-radius: 12px !important;
+                gap: 3px !important;
+            }
+
+            .share-btn svg {
+                width: 10px !important;
+                height: 10px !important;
+            }
                 font-size: 1.2em;
             }
         }
@@ -835,6 +866,7 @@
             color: white;
             border: none;
             padding: 8px 16px;
+            margin-top: 10px;
             border-radius: 20px;
             font-weight: 600;
             font-size: 0.85em;
@@ -1240,23 +1272,24 @@
             const cashValue = trade.size * trade.price;
             const formattedAmount = cashValue.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
             
-            // Your site URL with affiliate code
-            const siteUrl = 'https://polymarket-whale-trades-production.up.railway.app/?via=brosonpm';
+            // Use the market URL instead of your site - this will show Polymarket's rich card
+            const marketUrl = trade.eventSlug 
+                ? `https://polymarket.com/event/${trade.eventSlug}?via=brosonpm`
+                : `https://polymarket.com/event/${trade.slug}?via=brosonpm`;
             
             // Create the tweet text with proper spacing
-            const tweetText = `🐋 WHALE ALERT!
+const tweetText = `🐋 CHECK OUT THIS TRADE!
 
 ${trade.side === 'BUY' ? '📈' : '📉'} $${formattedAmount} ${trade.side} on "${trade.title}"
 
 Outcome: ${trade.outcome || 'N/A'}
 
-Copy this trade at:
-${siteUrl}
+#Polymarket #WhaleTrades #PredictionMarkets #PolymarketTraders
 
-#Polymarket #WhaleTrades #PredictionMarkets #PolymarketTraders`;
+Copy this trade 👇`;
             
-            // Encode the tweet - simpler approach
-            const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&via=brosonpm`;
+            // Use market URL in tweet - Twitter will show Polymarket's card preview
+            const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(tweetText)}&url=${encodeURIComponent(marketUrl)}&via=brosonpm`;
             
             // Track in Google Analytics
             if (typeof gtag !== 'undefined') {
