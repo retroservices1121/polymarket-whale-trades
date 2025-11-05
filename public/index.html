@@ -981,7 +981,17 @@
                 
                 if (response.ok) {
                     const markets = await response.json();
+                    console.log('API Response for', conditionId, ':', markets);
                     if (markets && markets.length > 0) {
+                        console.log('First market:', markets[0]);
+                        console.log('End date fields:', {
+                            end_date_iso: markets[0].end_date_iso,
+                            endDate: markets[0].endDate,
+                            end_date: markets[0].end_date,
+                            endDateIso: markets[0].endDateIso,
+                            closesAt: markets[0].closesAt,
+                            closes_at: markets[0].closes_at
+                        });
                         marketDetailsCache[conditionId] = markets[0];
                         return markets[0];
                     }
@@ -996,7 +1006,18 @@
         }
 
         // Format expiration date
-        function formatExpirationDate(endDateISO) {
+        function formatExpirationDate(marketDetails) {
+            // Try multiple possible field names
+            const endDateISO = marketDetails?.end_date_iso || 
+                              marketDetails?.endDateIso || 
+                              marketDetails?.end_date || 
+                              marketDetails?.endDate ||
+                              marketDetails?.closes_at ||
+                              marketDetails?.closesAt;
+            
+            console.log('formatExpirationDate called with:', marketDetails);
+            console.log('Found end date:', endDateISO);
+            
             if (!endDateISO) return { text: null, isUrgent: false, isWarning: false };
             
             const endDate = new Date(endDateISO);
@@ -1121,16 +1142,19 @@
 
         // Update a single trade card with expiration info
         function updateTradeExpiration(trade, marketDetails) {
-            const expirationInfo = marketDetails?.end_date_iso 
-                ? formatExpirationDate(marketDetails.end_date_iso)
-                : { text: 'N/A', isUrgent: false, isWarning: false };
+            const expirationInfo = formatExpirationDate(marketDetails);
             
             const expirationEl = document.getElementById(`expiration_${trade.timestamp}`);
             console.log('Looking for element:', `expiration_${trade.timestamp}`, 'Found:', !!expirationEl);
             if (expirationEl) {
-                expirationEl.textContent = expirationInfo.text;
-                expirationEl.className = `detail-value ${expirationInfo.isUrgent ? 'expires-soon' : expirationInfo.isWarning ? 'expires-warning' : ''}`;
-                console.log('Updated expiration to:', expirationInfo.text);
+                if (expirationInfo.text) {
+                    expirationEl.textContent = expirationInfo.text;
+                    expirationEl.className = `detail-value ${expirationInfo.isUrgent ? 'expires-soon' : expirationInfo.isWarning ? 'expires-warning' : ''}`;
+                    console.log('Updated expiration to:', expirationInfo.text);
+                } else {
+                    expirationEl.textContent = 'N/A';
+                    console.log('No expiration date found in market details');
+                }
             } else {
                 console.error('Element not found:', `expiration_${trade.timestamp}`);
             }
